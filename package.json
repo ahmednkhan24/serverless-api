@@ -8,12 +8,14 @@
     "url": "https://github.com/ahmednkhan24/serverless-api"
   },
   "scripts": {
-    "start": "sam build && sam local start-api",
     "test": "jest --coverage",
     "pretty": "prettier './src/**/*.{js,ts}' --write",
+    "typecheck": "tsc --project tsconfig.prod.json",
+    "precompile": "rm -rf dist",
+    "compile": "tsc -p tsconfig.prod.json",
+    "start": "sam build && sam local start-api",
     "predeploy": "sam build",
     "deploy": "sam deploy --region us-east-2 --template-file ./template.yaml --stack-name serverless-api-dev --resolve-s3 --capabilities CAPABILITY_IAM",
-    "typecheck": "tsc --project tsconfig.prod.json",
     "delete-stack": "env PAGER=cat aws cloudformation delete-stack --region us-east-2 --stack-name serverless-api-dev"
   },
   "dependencies": {

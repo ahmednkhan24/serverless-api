@@ -15,11 +15,11 @@ Resources:
           - http://*
           - https://*
 
-  TestLambda:
+  GetData:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-TestLambda
-      CodeUri: src
+      FunctionName: !Sub ${AWS::StackName}-GetData
+      CodeUri: dist
       Handler: index.handler
       Runtime: nodejs14.x
       MemorySize: 128
@@ -33,8 +33,8 @@ Resources:
             Method: GET
             ApiId: !Ref HttpApi
             PayloadFormatVersion: '2.0'
-    # Metadata:
-    #   RuntimeOption: typescript
+    Metadata:
+      RuntimeOption: typescript
 
 Outputs:
   RestApiURL:
