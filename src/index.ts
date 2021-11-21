@@ -1,6 +1,3 @@
-export const handler = async () => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ hello: 'world' }),
-  };
-};
+import { handler as getData } from './functions/GetData';
+
+export { getData };
