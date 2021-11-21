@@ -1,0 +1,31 @@
+{
+  "name": "serverless-api",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmednkhan24/serverless-api"
+  },
+  "scripts": {
+    "test": "jest --coverage",
+    "lint": "eslint **/*.ts",
+    "predeploy": "sam build",
+    "deploy": "sam deploy --region us-east-2 --template-file ./template.yaml --stack-name serverless-api --resolve-s3 --capabilities CAPABILITY_IAM",
+    "typecheck": "tsc --project tsconfig.prod.json",
+    "delete-stack": "env PAGER=cat aws cloudformation delete-stack --region us-east-2 --stack-name serverless-api"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.726.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.76",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^12.6.8",
+    "jest": "^26.6.3",
+    "prettier": "^2.3.2",
+    "ts-jest": "^26.5.4",
+    "typescript": "^3.5.3"
+  }
+}
