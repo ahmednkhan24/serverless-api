@@ -12,8 +12,6 @@ Resources:
       MemorySize: 128
       Timeout: 30
       Tracing: Active
-    Metadata:
-      RuntimeOption: typescript
 
   # Allow any API in the account to invoke the lambda authorizer function
   InvokePermission:
@@ -68,8 +66,6 @@ Resources:
             Method: GET
             ApiId: !Ref HttpApi
             PayloadFormatVersion: '2.0'
-    Metadata:
-      RuntimeOption: typescript
 
 Outputs:
   HttpApiURL:
