@@ -2,6 +2,28 @@ AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
+  AuthorizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-AuthorizerFunction
+      CodeUri: dist
+      Handler: index.authorizer
+      Runtime: nodejs14.x
+      MemorySize: 128
+      Timeout: 30
+      Tracing: Active
+    Metadata:
+      RuntimeOption: typescript
+
+  # Allow any API in the account to invoke the lambda authorizer function
+  InvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName: !Ref AuthorizerFunction
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:*/authorizers/*
+
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -14,6 +36,19 @@ Resources:
         AllowOrigins:
           - http://*
           - https://*
+      Auth:
+        Authorizers:
+          # https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-lambda-authorizer.html
+          LambdaAuthorizer:
+            FunctionPayloadType: REQUEST
+            AuthorizerPayloadFormatVersion: '2.0'
+            EnableSimpleResponses: False
+            FunctionArn: !GetAtt AuthorizerFunction.Arn
+            Identity:
+              Headers:
+                - Authorization
+              ReauthorizeEvery: 0
+        DefaultAuthorizer: LambdaAuthorizer
 
   GetData:
     Type: AWS::Serverless::Function
