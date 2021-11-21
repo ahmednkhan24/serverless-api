@@ -8,6 +8,7 @@
     "url": "https://github.com/ahmednkhan24/serverless-api"
   },
   "scripts": {
+    "start": "sam build && sam local start-api",
     "test": "jest --coverage",
     "lint": "eslint **/*.ts",
     "predeploy": "sam build",
