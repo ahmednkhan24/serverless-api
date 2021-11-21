@@ -7,7 +7,7 @@ Resources:
     Properties:
       CorsConfiguration:
         AllowHeaders:
-          - "*"
+          - '*'
         AllowMethods:
           - GET
           - OPTIONS
@@ -32,11 +32,11 @@ Resources:
             Path: /
             Method: GET
             ApiId: !Ref HttpApi
-            PayloadFormatVersion: "2.0"
+            PayloadFormatVersion: '2.0'
     # Metadata:
     #   RuntimeOption: typescript
 
 Outputs:
   RestApiURL:
-    Description: "HTTP API URL"
-    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
+    Description: 'HTTP API URL'
+    Value: !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/'

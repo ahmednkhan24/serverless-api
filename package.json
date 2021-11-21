@@ -10,7 +10,7 @@
   "scripts": {
     "start": "sam build && sam local start-api",
     "test": "jest --coverage",
-    "lint": "eslint **/*.ts",
+    "pretty": "prettier './src/**/*.{js,ts}' --write",
     "predeploy": "sam build",
     "deploy": "sam deploy --region us-east-2 --template-file ./template.yaml --stack-name serverless-api --resolve-s3 --capabilities CAPABILITY_IAM",
     "typecheck": "tsc --project tsconfig.prod.json",
