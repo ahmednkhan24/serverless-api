@@ -2,7 +2,7 @@
   "name": "serverless-api",
   "version": "1.0.0",
   "private": true,
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ahmednkhan24/serverless-api"
