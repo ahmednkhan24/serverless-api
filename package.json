@@ -13,20 +13,23 @@
     "typecheck": "tsc --project tsconfig.prod.json",
     "precompile": "rm -rf dist",
     "compile": "tsc -p tsconfig.prod.json",
+    "postcompile": "cp package.json dist && cp yarn.lock dist",
     "build": "yarn compile && sam build",
     "prestart": "yarn build",
     "start": "sam local start-api",
     "predeploy": "yarn build",
-    "deploy": "sam deploy --region us-east-2 --template-file ./template.yaml --stack-name serverless-api-dev --resolve-s3 --capabilities CAPABILITY_IAM",
+    "deploy": "sam deploy --region us-east-2 --stack-name serverless-api-dev --resolve-s3 --capabilities CAPABILITY_IAM",
     "delete-stack": "env PAGER=cat aws cloudformation delete-stack --region us-east-2 --stack-name serverless-api-dev"
   },
   "dependencies": {
-    "aws-sdk": "^2.726.0"
+    "aws-sdk": "^2.726.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.76",
     "@types/aws-sdk": "^2.7.0",
     "@types/jest": "^26.0.22",
+    "@types/lodash": "^4.14.177",
     "@types/node": "^12.6.8",
     "jest": "^26.6.3",
     "prettier": "^2.3.2",
