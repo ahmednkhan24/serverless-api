@@ -51,7 +51,7 @@ Resources:
   GetData:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-GetData
+      FunctionName: !Sub ${AWS::StackName}-GetDataFunction
       CodeUri: dist/getData
       Handler: index.handler
       Runtime: nodejs14.x
