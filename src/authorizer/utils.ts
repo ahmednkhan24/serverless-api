@@ -1,4 +1,4 @@
-import { GeneratePolicy, BasePolicyParams } from '../types';
+import { GeneratePolicy, BasePolicyParams } from './types';
 
 // Generate an IAM Formatted Policy response for the Authorizer
 const generatePolicy: GeneratePolicy = ({

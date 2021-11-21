@@ -13,7 +13,7 @@
     "typecheck": "tsc --project tsconfig.prod.json",
     "precompile": "rm -rf dist",
     "compile": "tsc -p tsconfig.prod.json",
-    "postcompile": "cp package.json dist && cp yarn.lock dist",
+    "postcompile": "sh ./scripts/postcompile.sh",
     "build": "yarn compile && sam build",
     "prestart": "yarn build",
     "start": "sam local start-api",

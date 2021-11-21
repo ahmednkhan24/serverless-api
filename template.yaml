@@ -6,8 +6,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-AuthorizerFunction
-      CodeUri: dist
-      Handler: index.authorizer
+      CodeUri: dist/authorizer
+      Handler: index.handler
       Runtime: nodejs14.x
       MemorySize: 128
       Timeout: 30
@@ -54,8 +54,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-GetData
-      CodeUri: dist
-      Handler: index.getData
+      CodeUri: dist/getData
+      Handler: index.handler
       Runtime: nodejs14.x
       MemorySize: 128
       Timeout: 30
