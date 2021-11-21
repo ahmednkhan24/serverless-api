@@ -37,6 +37,6 @@ Resources:
       RuntimeOption: typescript
 
 Outputs:
-  RestApiURL:
+  HttpApiURL:
     Description: 'HTTP API URL'
     Value: !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/'
