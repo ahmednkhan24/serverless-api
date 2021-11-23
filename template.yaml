@@ -1,11 +1,16 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  DatabaseName:
+    Type: String
+    Default: Sample_Database
+
 Resources:
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: Sample_Database
+      TableName: !Ref DatabaseName
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
@@ -62,16 +67,22 @@ Resources:
               ReauthorizeEvery: 0
         DefaultAuthorizer: LambdaAuthorizer
 
-  GetData:
+  GetAllData:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-GetDataFunction
-      CodeUri: dist/getData
-      Handler: index.handler
+      FunctionName: !Sub ${AWS::StackName}-GetAllDataFunction
+      CodeUri: dist/dynamoController
+      Handler: index.getAllItemsHandler
       Runtime: nodejs14.x
       MemorySize: 128
       Timeout: 30
       Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DatabaseName
+      Environment:
+        Variables:
+          DB_TABLE_NAME: !Ref DatabaseName
       Events:
         HttpApiGET:
           Type: HttpApi
