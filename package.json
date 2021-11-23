@@ -17,7 +17,8 @@
     "build": "yarn compile && sam build",
     "prestart": "yarn build",
     "start": "sam local start-api",
-    "predeploy": "yarn build",
+    "processtemplate": "sed -e 's/{DEPLOYMENT_ENVIRONMENT}/dev/g' template.env.yaml > template.yaml",
+    "predeploy": "yarn processtemplate && yarn build",
     "deploy": "sam deploy --region us-east-2 --stack-name serverless-api-dev --resolve-s3 --capabilities CAPABILITY_IAM",
     "delete-stack": "env PAGER=cat aws cloudformation delete-stack --region us-east-2 --stack-name serverless-api-dev"
   },

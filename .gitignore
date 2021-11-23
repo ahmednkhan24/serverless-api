@@ -105,3 +105,4 @@ dist
 
 # aws
 .aws-sam
+template.yaml
