@@ -4,7 +4,7 @@ import { getAllItems } from '../services/dynamo';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
-    console.log('getAllData event: ', JSON.stringify(event));
+    console.log('event: ', JSON.stringify(event));
 
     console.log('has headers?: ', has('headers', event));
 
