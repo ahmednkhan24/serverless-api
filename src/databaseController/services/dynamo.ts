@@ -38,12 +38,10 @@ export const getAllItems = async () => {
 };
 
 export const createNewItem = async (data: any) => {
-  const id = uuidv4();
-
   const params: DynamoPutItem = {
     TableName: TABLE_NAME,
     Item: {
-      id: id,
+      id: uuidv4(),
       ...data,
     },
   };
