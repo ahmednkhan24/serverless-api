@@ -1,4 +1,6 @@
 import { config, DynamoDB } from 'aws-sdk';
+import { v4 as uuidv4 } from 'uuid';
+import { DynamoPutItem } from './types';
 
 config.update({
   region: 'us-east-2',
@@ -37,5 +39,26 @@ export const getAllItems = async () => {
   } catch (err) {
     console.log('An error occurred: ', JSON.stringify(err));
     return [];
+  }
+};
+
+export const createNewItem = async (data: any) => {
+  try {
+    const id = uuidv4();
+
+    const params: DynamoPutItem = {
+      TableName: TABLE_NAME,
+      Item: {
+        id: id,
+        ...data,
+      },
+    };
+    console.log('item for creation: ', JSON.stringify(params));
+    await dynamo.put(params).promise();
+
+    return params.Item;
+  } catch (err) {
+    console.log('An error occurred: ', JSON.stringify(err));
+    return {};
   }
 };
