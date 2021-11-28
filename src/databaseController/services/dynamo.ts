@@ -4,6 +4,7 @@ import {
   DynamoGetAllItemsParams,
   DynamoGetItemParams,
   DynamoPutItemParams,
+  DynamoDeleteItemParams,
 } from './types';
 
 config.update({
@@ -66,4 +67,15 @@ export const createNewItem = async (data: any) => {
   await dynamo.put(params).promise();
 
   return params.Item;
+};
+
+export const deleteItem = async (id: string) => {
+  const params: DynamoDeleteItemParams = {
+    TableName: TABLE_NAME,
+    Key: {
+      id,
+    },
+  };
+
+  await dynamo.delete(params).promise();
 };
