@@ -1,6 +1,10 @@
 import { config, DynamoDB } from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
-import { DynamoPutItem } from './types';
+import {
+  DynamoGetAllItemsParams,
+  DynamoGetItemParams,
+  DynamoPutItemParams,
+} from './types';
 
 config.update({
   region: 'us-east-2',
@@ -13,14 +17,16 @@ const TABLE_NAME = process.env.DB_TABLE_NAME || 'Sample_Database';
 export const getAllItems = async () => {
   console.log(`starting scan on the ${TABLE_NAME} database table...`);
 
-  let data = await dynamo.scan({ TableName: TABLE_NAME }).promise();
+  let data = await dynamo
+    .scan({ TableName: TABLE_NAME } as DynamoGetAllItemsParams)
+    .promise();
   let databaseItems = [...data.Items];
 
   // scan maxes out at 1MB of data. continue scanning if there is more data to read
   while (typeof data.LastEvaluatedKey !== 'undefined') {
     console.log('Scanning for more...');
 
-    const params = {
+    const params: DynamoGetAllItemsParams = {
       TableName: TABLE_NAME,
       ExclusiveStartKey: data.LastEvaluatedKey,
     };
@@ -37,8 +43,19 @@ export const getAllItems = async () => {
   return databaseItems;
 };
 
+export const getItem = async (id: string) => {
+  const params: DynamoGetItemParams = {
+    TableName: TABLE_NAME,
+    Key: {
+      id,
+    },
+  };
+
+  return dynamo.get(params).promise();
+};
+
 export const createNewItem = async (data: any) => {
-  const params: DynamoPutItem = {
+  const params: DynamoPutItemParams = {
     TableName: TABLE_NAME,
     Item: {
       id: uuidv4(),
