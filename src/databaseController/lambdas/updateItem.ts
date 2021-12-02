@@ -1,10 +1,12 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
+import { updateItem } from '../services/dynamo';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     console.log('event: ', JSON.stringify(event));
     const { id } = event.pathParameters;
     const body = JSON.parse(event.body);
+    const updatedItem = await updateItem(id, body);
 
     return {
       statusCode: 200,

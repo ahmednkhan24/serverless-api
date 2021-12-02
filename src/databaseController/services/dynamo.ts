@@ -4,6 +4,7 @@ import {
   DynamoGetAllItemsParams,
   DynamoGetItemParams,
   DynamoPutItemParams,
+  DynamoUpdateItemParams,
   DynamoDeleteItemParams,
 } from './types';
 
@@ -78,4 +79,27 @@ export const deleteItem = async (id: string) => {
   };
 
   await dynamo.delete(params).promise();
+};
+
+// todo: find a way to update all items in one transaction instead of multiple DB calls
+export const updateItem = async (id: string, data: any) => {
+  const promises = await Promise.all(
+    Object.keys(data).map((key) => {
+      const params: DynamoUpdateItemParams = {
+        TableName: TABLE_NAME,
+        Key: {
+          id,
+        },
+        UpdateExpression: `set ${key} = :updateValue`,
+        ExpressionAttributeValues: {
+          ':updateValue': data[key],
+        },
+        ReturnValues: 'ALL_NEW', // get all the item attributes after they are updated
+      };
+
+      return dynamo.update(params).promise();
+    })
+  );
+
+  return promises[promises.length - 1].Attributes;
 };
