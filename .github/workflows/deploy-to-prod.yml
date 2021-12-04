@@ -1,0 +1,47 @@
+name: Pull Request CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**/*.ts'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 14.x
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies using Yarn
+        run: yarn install
+      - name: Check for TypeScript Compiler Errors
+        run: yarn typecheck
+      - name: Execute Unit Tests
+        run: yarn test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 14.x
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: us-east-2
+      - name: Deploy to PROD
+        run: |
+          aws sts get-caller-identity
