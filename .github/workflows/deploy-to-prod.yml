@@ -22,27 +22,47 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: List Directory
+        run: ls
       - name: Install Dependencies using Yarn
         run: yarn install
       - name: Check for TypeScript Compiler Errors
         run: yarn typecheck
       - name: Execute Unit Tests
         run: yarn test
+      - name: List Directory
+        run: ls
 
-  deploy:
-    needs: test
+  build:
+     needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version:
           - 14.x
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          aws-region: us-east-2
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Deploy to PROD
-        run: |
-          aws sts get-caller-identity
+          node-version: ${{ matrix.node-version }}
+      - name: List Directory
+        run: ls
+
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version:
+  #         - 14.x
+  #   steps:
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-region: us-east-2
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     - name: Deploy to PROD
+  #       run: |
+  #         aws sts get-caller-identity
