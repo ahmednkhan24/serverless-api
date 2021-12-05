@@ -59,9 +59,9 @@ jobs:
           aws sts get-caller-identity
           sed -e 's/{DEPLOYMENT_ENVIRONMENT}/dev/g' template.env.yaml > template.yaml
           sam validate
-          ls
+          ls -a
           sam build
-          ls
+          ls -a
 
   # deploy:
   #   needs: build
