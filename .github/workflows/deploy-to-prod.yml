@@ -31,7 +31,7 @@ jobs:
         run: yarn test
 
   build-and-deploy:
-    # needs: test
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
