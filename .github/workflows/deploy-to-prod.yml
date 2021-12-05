@@ -63,7 +63,7 @@ jobs:
           sam validate
           sam build
       - name: Upload Build Artifact
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: aws-sam-build-artifact
           path: .aws-sam
