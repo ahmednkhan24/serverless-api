@@ -52,12 +52,16 @@ jobs:
         run: |
           yarn install
           tsc -p tsconfig.prod.json
-          sh ./scripts/postcompile.sh
+          sh scripts/postcompile.sh
+          yarn install --production
       - name: build
         run: |
           aws sts get-caller-identity
           sed -e 's/{DEPLOYMENT_ENVIRONMENT}/dev/g' template.env.yaml > template.yaml
           sam validate
+          ls
+          sam build
+          ls
 
   # deploy:
   #   needs: build
