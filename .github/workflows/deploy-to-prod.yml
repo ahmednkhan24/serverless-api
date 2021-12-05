@@ -56,17 +56,19 @@ jobs:
           tsc -p tsconfig.prod.json
           sh scripts/postcompile.sh
           yarn install --production
-      - name: Build artifact
+      - name: Build and zip artifact
         run: |
           aws sts get-caller-identity
           sed -e 's/{DEPLOYMENT_ENVIRONMENT}/prod/g' template.env.yaml > template.yaml
           sam validate
           sam build
-      - name: Zip and upload build artifact
+          zip -r -X .aws-sam.zip .aws-sam
+          ls -a
+      - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
           name: aws-sam-build-artifact
-          path: .aws-sam
+          path: .aws-sam.zip
 
   # deploy:
   #   needs: build
