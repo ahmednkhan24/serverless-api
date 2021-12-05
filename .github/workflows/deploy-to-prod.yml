@@ -17,17 +17,17 @@ jobs:
   #       node-version:
   #         - 14.x
   #   steps:
-  #     - name: Checkout Code
+  #     - name: Checkout code
   #       uses: actions/checkout@v2
-  #     - name: Setup Node.js ${{ matrix.node-version }}
+  #     - name: Setup node.js ${{ matrix.node-version }}
   #       uses: actions/setup-node@v1
   #       with:
   #         node-version: ${{ matrix.node-version }}
-  #     - name: Install Dependencies using Yarn
+  #     - name: Install dependencies using yarn
   #       run: yarn install
-  #     - name: Check for TypeScript Compiler Errors
+  #     - name: Check for TypeScript compiler errors
   #       run: yarn typecheck
-  #     - name: Execute Unit Tests
+  #     - name: Execute unit tests
   #       run: yarn test
 
   build:
@@ -38,31 +38,31 @@ jobs:
         node-version:
           - 14.x
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v2
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Configure AWS Credentials
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-east-2
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: compile
+      - name: Compile code
         run: |
           yarn install
           tsc -p tsconfig.prod.json
           sh scripts/postcompile.sh
           yarn install --production
-      - name: build
+      - name: Build artifact
         run: |
           aws sts get-caller-identity
           sed -e 's/{DEPLOYMENT_ENVIRONMENT}/prod/g' template.env.yaml > template.yaml
           sam validate
           sam build
-      - name: Upload Build Artifact
+      - name: Zip and upload build artifact
         uses: actions/upload-artifact@v2
         with:
           name: aws-sam-build-artifact
