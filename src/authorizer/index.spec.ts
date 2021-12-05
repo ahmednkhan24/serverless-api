@@ -25,6 +25,6 @@ describe('Authorizer', () => {
 
   // TODO: add unit test
   it('Handles any runtime errors', () => {
-    expect(1).toEqual(1);
+    expect(1).toEqual(2);
   });
 });
