@@ -1,0 +1,28 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'template.env.yaml'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Validate template.yaml
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          sed -e 's/{DEPLOYMENT_ENVIRONMENT}/prod/g' template.env.yaml > template.yaml
+          sam validate
