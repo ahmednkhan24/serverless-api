@@ -19,7 +19,7 @@
     "start": "yarn process-and-compile && sam local start-api",
     "predeploy": "yarn process-and-compile",
     "deploy": "sam deploy --config-env DEV",
-    "delete-stack": "env PAGER=cat aws cloudformation delete-stack --region us-east-2 --stack-name serverless-api-dev"
+    "delete-stack": "env PAGER=cat aws cloudformation delete-stack --region us-east-2 --stack-name serverless-crud-api-dev"
   },
   "dependencies": {
     "aws-sdk": "^2.726.0",
