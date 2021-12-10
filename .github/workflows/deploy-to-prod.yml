@@ -54,18 +54,10 @@ jobs:
       - name: Compile code
         run: |
           yarn install
-          tsc -p tsconfig.prod.json
-          sh scripts/postcompile.sh
-      - name: Build artifact
+          yarn compile
+      - name: Deploy
         run: |
           aws sts get-caller-identity
           sed -e 's/{DEPLOYMENT_ENVIRONMENT}/prod/g' template.env.yaml > template.yaml
           sam validate
-          sam build
-      - name: Deploy artifact
-        run: |
-          sam deploy \
-          --region us-east-2 \
-          --stack-name serverless-api-prod \
-          --capabilities CAPABILITY_IAM \
-          --resolve-s3
+          sam deploy --config-env PROD

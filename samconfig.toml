@@ -1,0 +1,21 @@
+version = 0.1
+
+[default.deploy.parameters]
+debug                   = true
+disable_rollback        = false
+confirm_changeset       = false
+fail_on_empty_changeset = false
+
+[DEV.deploy.parameters]
+region       = "us-east-2"
+stack_name   = "serverless-crud-api-dev"
+s3_prefix    = "serverless-crud-api-dev"
+s3_bucket    = "serverless-crud-api"
+capabilities = "CAPABILITY_IAM"
+
+[PROD.deploy.parameters]
+region       = "us-east-2"
+stack_name   = "serverless-crud-api-prod"
+s3_prefix    = "serverless-crud-api-prod"
+s3_bucket    = "serverless-crud-api"
+capabilities = "CAPABILITY_IAM"

@@ -13,13 +13,12 @@
     "typecheck": "tsc --project tsconfig.prod.json",
     "precompile": "rm -rf dist",
     "compile": "tsc -p tsconfig.prod.json",
-    "postcompile": "sh ./scripts/postcompile.sh",
-    "build": "yarn compile && sam build",
-    "prestart": "yarn build",
-    "start": "sam local start-api",
+    "postcompile": "cp -r package.json yarn.lock dist && cd dist && yarn install --prod",
     "processtemplate": "sed -e 's/{DEPLOYMENT_ENVIRONMENT}/dev/g' template.env.yaml > template.yaml",
-    "predeploy": "yarn processtemplate && yarn build",
-    "deploy": "sam deploy --region us-east-2 --stack-name serverless-api-dev --resolve-s3 --capabilities CAPABILITY_IAM",
+    "process-and-compile": "yarn compile && yarn processtemplate",
+    "start": "yarn process-and-compile && sam local start-api",
+    "predeploy": "yarn process-and-compile",
+    "deploy": "sam deploy --config-env DEV",
     "delete-stack": "env PAGER=cat aws cloudformation delete-stack --region us-east-2 --stack-name serverless-api-dev"
   },
   "dependencies": {
